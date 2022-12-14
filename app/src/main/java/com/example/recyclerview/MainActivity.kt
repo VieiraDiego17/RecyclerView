@@ -1,5 +1,7 @@
 package com.example.recyclerview
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +27,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        profileAdapter = ProfileAdapter()
+        profileAdapter = ProfileAdapter { profile ->
+            openUrl(profile.link)
+        }
 
-        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-        recyclerView.adapter = profileAdapter
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = profileAdapter
+        }
+    }
+
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 }
